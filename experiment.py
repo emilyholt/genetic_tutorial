@@ -36,11 +36,13 @@ def evalOneMax(individual):
 - mutation rate
 - initial size of population
 - number of generations
-- number of 'genes' ?
+- number of 'genes'
 
 '''
 
-def run(crossover_rate=0.5, mutation_rate=0.2, population_size=300, total_generations=100):
+GENES = ["BLUE", "GREEN"]
+
+def run(crossover_rate=0.5, mutation_rate=0.2, population_size=300, total_generations=100, total_genes=20):
     
     creator.create("FitnessMax", base.Fitness, weights=(1.0,))
     creator.create("Individual", list, fitness=creator.FitnessMax)
@@ -58,7 +60,7 @@ def run(crossover_rate=0.5, mutation_rate=0.2, population_size=300, total_genera
     #                         define 'individual' to be an individual
     #                         consisting of 100 'attr_bool' elements ('genes')
     toolbox.register("individual", tools.initRepeat, creator.Individual, 
-        toolbox.attr_bool, 100)
+        toolbox.attr_bool, total_genes)
 
     # define the population to be a list of individuals
     toolbox.register("population", tools.initRepeat, list, toolbox.individual)
@@ -163,8 +165,18 @@ def run(crossover_rate=0.5, mutation_rate=0.2, population_size=300, total_genera
     
     print("-- End of evolution --")
     
-    best_ind = tools.selBest(pop, 1)[0]
-    print("Sample individual: %s" % (best_ind))
+    resulting_population = tools.selBest(pop, population_size)
+    return resulting_population
+
+def print_population(population):
+    print("Resulting individuals: \n")
+    for ind in population:
+        print(ind)
+        ind_expression = []
+        for gene_code in ind:
+            gene_exp = GENES[gene_code]
+            ind_expression.append(gene_exp)
+        print(ind_expression)
 
 if __name__ == "__main__":
     run()
