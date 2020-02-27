@@ -40,9 +40,7 @@ def evalOneMax(individual):
 
 '''
 
-GENES = ["BLUE", "GREEN"]
-
-def run(crossover_rate=0.5, mutation_rate=0.2, population_size=300, total_generations=100, total_genes=20):
+def run(expression, crossover_rate=0.5, mutation_rate=0.2, population_size=20, total_generations=100, total_genes=20):
     
     creator.create("FitnessMax", base.Fitness, weights=(1.0,))
     creator.create("Individual", list, fitness=creator.FitnessMax)
@@ -54,7 +52,7 @@ def run(crossover_rate=0.5, mutation_rate=0.2, population_size=300, total_genera
     #                      which corresponds to integers sampled uniformly
     #                      from the range [0,1] (i.e. 0 or 1 with equal
     #                      probability)
-    toolbox.register("attr_bool", random.randint, 0, 1)
+    toolbox.register("attr_bool", random.randint, 0, len(expression) - 1)
 
     # Structure initializers
     #                         define 'individual' to be an individual
@@ -168,13 +166,13 @@ def run(crossover_rate=0.5, mutation_rate=0.2, population_size=300, total_genera
     resulting_population = tools.selBest(pop, population_size)
     return resulting_population
 
-def print_population(population):
+def print_population(population, expression):
     print("Resulting individuals: \n")
     for ind in population:
         print(ind)
         ind_expression = []
         for gene_code in ind:
-            gene_exp = GENES[gene_code]
+            gene_exp = expression[gene_code]
             ind_expression.append(gene_exp)
         print(ind_expression)
 
