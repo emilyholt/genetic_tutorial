@@ -13,10 +13,6 @@
 #    You should have received a copy of the GNU Lesser General Public
 #    License along with DEAP. If not, see <http://www.gnu.org/licenses/>.
 
-
-#    example which maximizes the sum of a list of integers
-#    each of which can be 0 or 1
-
 import random
 
 from deap import base
@@ -30,15 +26,10 @@ def evalOneMax(individual):
     # return sum(individual),
     return 1,
 
-'''
-# THINGS WE WANT TO CHANGE:
-- cross-over-rate
-- mutation rate
-- initial size of population
-- number of generations
-- number of 'genes'
-
-'''
+def rand_weighted_choice(start, stop, weights):
+    result_array = random.choices(range(start, stop), weights)
+    result = result_array[0]
+    return result
 
 def run(expression, crossover_rate=0.5, mutation_rate=0.2, population_size=20, total_generations=100, total_genes=20):
     
@@ -52,7 +43,7 @@ def run(expression, crossover_rate=0.5, mutation_rate=0.2, population_size=20, t
     #                      which corresponds to integers sampled uniformly
     #                      from the range [0,1] (i.e. 0 or 1 with equal
     #                      probability)
-    toolbox.register("attr_bool", random.randint, 0, len(expression) - 1)
+    toolbox.register("attr_bool", rand_weighted_choice, 0, len(expression), [0.2, 0.3, 0.5])
 
     # Structure initializers
     #                         define 'individual' to be an individual
@@ -86,12 +77,6 @@ def run(expression, crossover_rate=0.5, mutation_rate=0.2, population_size=20, t
     # each individual is a list of integers)
     pop = toolbox.population(n=population_size)
 
-    # CXPB  is the probability with which two individuals
-    #       are crossed
-    #
-    # MUTPB is the probability for mutating an individual
-    CXPB, MUTPB = crossover_rate, mutation_rate
-    
     print("Start of evolution")
     
     # Evaluate the entire population
@@ -121,8 +106,8 @@ def run(expression, crossover_rate=0.5, mutation_rate=0.2, population_size=20, t
         # Apply crossover and mutation on the offspring
         for child1, child2 in zip(offspring[::2], offspring[1::2]):
 
-            # cross two individuals with probability CXPB
-            if random.random() < CXPB:
+            # cross two individuals with probability crossover_rate
+            if random.random() < crossover_rate:
                 toolbox.mate(child1, child2)
 
                 # fitness values of the children
@@ -132,8 +117,8 @@ def run(expression, crossover_rate=0.5, mutation_rate=0.2, population_size=20, t
 
         for mutant in offspring:
 
-            # mutate an individual with probability MUTPB
-            if random.random() < MUTPB:
+            # mutate an individual with probability mutation_rate
+            if random.random() < mutation_rate:
                 toolbox.mutate(mutant)
                 del mutant.fitness.values
     
