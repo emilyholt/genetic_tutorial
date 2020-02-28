@@ -65,7 +65,7 @@ def run(expression, crossover_rate=0.5, mutation_rate=0.2, population_size=20, t
 
     # register a mutation operator with a probability to
     # flip each attribute/gene of 0.05
-    toolbox.register("mutate", tools.mutFlipBit, indpb=0.05)
+    toolbox.register("mutate", tools.mutGaussian, indpb=0.05)
 
     # operator for selecting individuals for breeding the next
     # generation: each individual of the current generation
