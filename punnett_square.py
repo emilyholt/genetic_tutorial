@@ -56,7 +56,11 @@ class PunnettSquareSimulator():
     print(counts)
 
   def calculate_phenotype_probabilities(self, ps):
-    counts = dict(("".join(i), ps.count(i) / len(ps)) for i in ps)
+    counts = {
+      self.dominant_trait: sum(map(lambda x: self.is_homozygous_dominant(x) or self.is_heterozygous(x), ps))
+      self.dominant_trait: sum(map(lambda x: self.is_homozygous_recessive(x), ps))
+      self.recessive_trait: []
+    }
     return counts
 
   def print_phenotype_probabilities(self, ps):
