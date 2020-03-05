@@ -1,24 +1,35 @@
 from punnett_square import *
-DOMINANT_ALLELE = "B"
-RECESSIVE_ALLELE  = "b"
-DOMINANT_TRAIT = "Brown fur"
-RECESSIVE_TRAIT  = "Red fur"
 
-parent_a = [DOMINANT_ALLELE, RECESSIVE_ALLELE]
-parent_b = [DOMINANT_ALLELE, RECESSIVE_ALLELE]
-number_of_offspring = 50
+dominant_allele = 'B'
+recessive_allele = 'b'
 
-ps_example = punnett_square(parent_a, parent_b)
-print_punnett_square(parent_a, parent_b, ps_example)
-counts = calculate_genotype_probabilities(ps_example)
-print(counts)
-offspring = generate_offspring(parent_a, parent_b)
-print("offspring")
+dominant_phenotype = 'Brown Fur'
+recessive_phenotype = 'White Fur'
+
+bunny_a = [dominant_allele, dominant_allele]
+bunny_b = [dominant_allele, recessive_allele]
+
+ps = punnett_square(bunny_a, bunny_b)
+print_punnett_square(bunny_a, bunny_b, ps)
+
+punnett_square_probabilities = calculate_punnett_square_probabilities(ps)
+print(punnett_square_probabilities)
+genotype_probabilities = calculate_genotype_probabilities(ps)
+print(genotype_probabilities)
+
+offspring = generate_offspring(bunny_a, bunny_b)
 print(offspring)
+offspring_phenotype = get_offspring_phenotype(offspring, dominant_phenotype, recessive_phenotype)
+
+print(offspring_phenotype)
+for num in range(5):
+	print(num)
 
 offspring_list = []
-for number in range(number_of_offspring):
-  new_offspring = generate_offspring(parent_a, parent_b)
-  offspring_list.append(new_offspring)
-
+for num in range(5):
+	offspring = generate_offspring(bunny_a, bunny_b)
+	offspring_list.append(offspring)
 print(offspring_list)
+
+stats = genotype_statistics(offspring_list)
+print(stats)

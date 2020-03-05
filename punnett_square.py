@@ -1,9 +1,5 @@
 import random
 
-DOMINANT_ALLELE = "B"
-RECESSIVE_ALLELE = "b"
-NUMBER_OF_OFFSPRING = 50
-
 def punnett_square(parent_a, parent_b):
   square_1 = [parent_a[0], parent_b[0]]
   square_2 = [parent_a[1], parent_b[0]]
@@ -27,9 +23,9 @@ def calculate_punnett_square_probabilities(ps):
 
 def calculate_genotype_probabilities(ps):
   counts = {
-    "hetero": (ps.count([DOMINANT_ALLELE, RECESSIVE_ALLELE]) + ps.count([RECESSIVE_ALLELE, DOMINANT_ALLELE])) / len(ps),
-    "homozygous_dominant": ps.count([DOMINANT_ALLELE, DOMINANT_ALLELE]) / len(ps),
-    "homozygous_recessive": ps.count([RECESSIVE_ALLELE, RECESSIVE_ALLELE]) / len(ps)
+    "hetero": sum(map(lambda x: is_heterozygous(x), ps)) / len(ps),
+    "homozygous_dominant": sum(map(lambda x: is_homozygous_dominant(x), ps)) / len(ps),
+    "homozygous_recessive": sum(map(lambda x: is_homozygous_recessive(x), ps)) / len(ps)
   }
   return counts
 
@@ -44,24 +40,31 @@ def generate_offspring(parent_a, parent_b):
   offspring = random.choices(choices, weights)[0]
   return list(offspring)
 
+def get_offspring_phenotype(offspring, dominant_phenotype, recessive_phenotype):
+  if has_dominant_phenotype(offspring):
+    return dominant_phenotype
+  else:
+    return recessive_phenotype
+
 def is_heterozygous(individual):
-  return individual == [DOMINANT_ALLELE, RECESSIVE_ALLELE] or individual == [RECESSIVE_ALLELE, DOMINANT_ALLELE]
+  return any(allele.isupper() for allele in individual) and any(not allele.isupper() for allele in individual)
 
 def is_homozygous_dominant(individual):
-  return individual == [DOMINANT_ALLELE, DOMINANT_ALLELE]
+  return all(allele.isupper() for allele in individual)
 
 def is_homozygous_recessive(individual):
-  return individual == [RECESSIVE_ALLELE, RECESSIVE_ALLELE]
+  return all(not allele.isupper() for allele in individual)
 
 def has_dominant_phenotype(individual):
-  return DOMINANT_ALLELE in individual
+  return any(allele.isupper() for allele in individual)
 
 def has_recessive_phenotype(individual):
-  return not has_dominant_phenotype(individual)
+  return is_homozygous_recessive(individual)
 
-# def genotype_statistics(popualtion):
-#   stats = {
-#     "BB":
-#   }
-
-# def phenotype_statistic(population):
+def genotype_statistics(population):
+  stats = {
+    "hetero": sum(map(lambda x: is_heterozygous(x), population)) / len(population),
+    "homozygous_dominant": sum(map(lambda x: is_homozygous_dominant(x), population)) / len(population),
+    "homozygous_recessive": sum(map(lambda x: is_homozygous_recessive(x), population)) / len(population)
+  }
+  return stats
