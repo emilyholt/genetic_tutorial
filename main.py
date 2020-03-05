@@ -1,28 +1,24 @@
-from punnett_square import PunnettSquareSimulator
+from punnett_square import *
 DOMINANT_ALLELE = "B"
 RECESSIVE_ALLELE  = "b"
 DOMINANT_TRAIT = "Brown fur"
 RECESSIVE_TRAIT  = "Red fur"
 
-ps = PunnettSquareSimulator(DOMINANT_ALLELE, RECESSIVE_ALLELE, DOMINANT_TRAIT, RECESSIVE_TRAIT)
-
-
 parent_a = [DOMINANT_ALLELE, RECESSIVE_ALLELE]
 parent_b = [DOMINANT_ALLELE, RECESSIVE_ALLELE]
 number_of_offspring = 50
 
-ps_example = ps.punnett_square(parent_a, parent_b)
-ps.print_punnett_square(parent_a, parent_b, ps_example)
-ps.print_genotype_probabilities(ps_example)
-counts = ps.calculate_genotype_probabilities(ps_example)
+ps_example = punnett_square(parent_a, parent_b)
+print_punnett_square(parent_a, parent_b, ps_example)
+counts = calculate_genotype_probabilities(ps_example)
 print(counts)
-offspring = ps.generate_offspring(parent_a, parent_b)
+offspring = generate_offspring(parent_a, parent_b)
 print("offspring")
 print(offspring)
 
 offspring_list = []
 for number in range(number_of_offspring):
-  new_offspring = ps.generate_offspring(parent_a, parent_b)
+  new_offspring = generate_offspring(parent_a, parent_b)
   offspring_list.append(new_offspring)
 
 print(offspring_list)
