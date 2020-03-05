@@ -6,7 +6,7 @@ recessive_allele = 'b'
 dominant_phenotype = 'Brown Fur'
 recessive_phenotype = 'White Fur'
 
-bunny_a = [dominant_allele, dominant_allele]
+bunny_a = [dominant_allele, recessive_allele]
 bunny_b = [dominant_allele, recessive_allele]
 
 ps = punnett_square(bunny_a, bunny_b)
